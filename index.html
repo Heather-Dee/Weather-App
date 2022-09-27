@@ -17,6 +17,8 @@
 <body>
     <div class="container">
        <div class="weather-app">
+        <div class="overview">
+        
     <h1>
         New York
     </h1>
@@ -27,11 +29,21 @@
         <li>
         Clear
         </li>
+    </div>
     </ul>
     <div class="row">
         <div class="col-6">
-            <img src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png" alt="cloudy"/>
-        12°C | °F
+            <div class="d-flex weather-temperature">
+            <img 
+            src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png" 
+            alt="cloudy"
+            class="float-left"
+            />
+                <div class="float-left">
+                <strong>12</strong>
+                <span class="units">°C | <a href="#" id="fahrenheit">°F</a> </span>
+                </div>
+            </div>
         </div>
     <div class="col-6">
         <ul>
@@ -47,10 +59,14 @@
         </ul>
     </div>
     </div>
-    <small>This app is <a href="https://github.com/Heather-Dee" target="_blank">open source code</a> by Heather Donahue</small>
-</div> 
     
+</div> 
+
+</div> 
+<div class="weather-app-wrapper">
+<small>This app is <a href="https://github.com/Heather-Dee" target="_blank">open source code</a> by Heather Donahue</small>
 </div>
-    <script src="app.js"></script>
+</div>
+<script src="app.js"></script>
 </body>
 </html>
