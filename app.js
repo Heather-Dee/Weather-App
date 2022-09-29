@@ -29,7 +29,7 @@ function formatDate(timestamp){
 }
 
 
-
+//pull weather data from Openweather API
 function displayTemperature(response){
     let temperatureElement = document.querySelector("#temperature");
     let cityElement = document.querySelector("#city");
@@ -39,7 +39,11 @@ function displayTemperature(response){
     let dateElement = document.querySelector("#date");
     let iconElement = document.querySelector("#icon");
 
-    temperatureElement.innerHTML = Math.round(response.data.main.temp);
+    //Storing F temp inside variable for use later
+    fahrenheitTemp = response.data.main.temp;
+
+
+    temperatureElement.innerHTML = Math.round(fahrenheitTemp);
     cityElement.innerHTML = response.data.name;
     descriptionElement.innerHTML = response.data.weather[0].description;
     humidityElement.innerHTML = response.data.main.humidity;
@@ -48,22 +52,52 @@ function displayTemperature(response){
     iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`)
     iconElement.setAttribute("alt", response.data.weather[0].description)
 }
+
+//Make search button work and use the input city to pull weather data from API (1 of 3)
 function search(city){
     let apiKey = "5aac6d0188c6f17d6d2bbe6591b6fef0";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
     axios.get(apiUrl).then(displayTemperature);
 }
-
-
 function handleSubmit(event){
 event.preventDefault();
 let cityInputElement = document.querySelector("#city-input");
 search(cityInputElement.value);
 }
+//Convert from fahrenheit to celsius (1 of 3)
+function showCelsiusTemp(event){
+event.preventDefault();
+let temperatureElement = document.querySelector("#temperature");
+//remove active class
+fahrenheitLink.classList.remove("active");
+celsiusLink.classList.add("active");
+let celsiusTemp = ((fahrenheitTemp-32) * 5/9);
+temperatureElement.innerHTML = Math.round(celsiusTemp);
+}
 
-search("New York");
+//Below is continuation from fahrenheit to celsius (2 of 3)
+function showFahrenheitTemp(event){
+event.preventDefault();
+//remove and add active class
+fahrenheitLink.classList.add("active");
+celsiusLink.classList.remove("active");
+let temperatureElement = document.querySelector("#temperature");
+temperatureElement.innerHTML = Math.round(fahrenheitTemp);
+}
+
+let fahrenheitTemp = null;
 
 
-
+//Below is continuation of search button (2 of 3)
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+//Below is continuation from fahrenheit to celsius (3 of 3)
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", showCelsiusTemp);
+
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", showFahrenheitTemp);
+
+//Below is continuation of search button (3 of 3)
+search("Malibu");

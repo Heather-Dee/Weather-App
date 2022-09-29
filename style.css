@@ -57,3 +57,10 @@ li:first-letter{
     position: relative;
     top: -34px;
 }
+.weather-temperature .active {
+   color: #5FB6CF; 
+   text-decoration: none;
+}
+.weather-temperature .active:hover {
+    text-decoration: underline;
+ }
