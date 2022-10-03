@@ -27,6 +27,47 @@ function formatDate(timestamp){
     //return day of week not number
     return `${day} ${hours}:${minutes}`;
 }
+//replicate first day of forecast to expand to five days using a LOOP (looping through an array)
+function displayForecast(){
+    let forecastElement = document.querySelector("#forecast");
+
+    let forecastHTML = `<div class="row">`;
+    let days = ["Thu","Fri","Sat", "Sun"];
+    days.forEach(function(day) {
+        forecastHTML = forecastHTML + `
+        <div class="col-2">
+        <div class="weather-forecast-date">${day}</div>
+        <img 
+            src="http://openweathermap.org/img/wn/02d@2x.png" 
+            alt="cloudy" 
+            width="30"
+         />
+        <div class="weather-forecast-temp">
+            <span class="weather-forecast-temp-max">70°</span>
+            <span class="weather-forecast-temp-min">50°</span>
+        </div>
+        </div> 
+        `;
+    })
+
+   
+forecastHTML = forecastHTML + `</div>`;   
+forecastElement.innerHTML = forecastHTML;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //pull weather data from Openweather API
@@ -39,9 +80,9 @@ function displayTemperature(response){
     let dateElement = document.querySelector("#date");
     let iconElement = document.querySelector("#icon");
 
-    //Storing F temp inside variable for use later
-    fahrenheitTemp = response.data.main.temp;
 
+//Storing F temp inside variable for use later
+fahrenheitTemp = response.data.main.temp;
 
     temperatureElement.innerHTML = Math.round(fahrenheitTemp);
     cityElement.innerHTML = response.data.name;
@@ -88,6 +129,7 @@ temperatureElement.innerHTML = Math.round(fahrenheitTemp);
 let fahrenheitTemp = null;
 
 
+
 //Below is continuation of search button (2 of 3)
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
@@ -101,3 +143,4 @@ fahrenheitLink.addEventListener("click", showFahrenheitTemp);
 
 //Below is continuation of search button (3 of 3)
 search("Malibu");
+displayForecast();
