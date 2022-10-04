@@ -28,23 +28,27 @@ function formatDate(timestamp){
     return `${day} ${hours}:${minutes}`;
 }
 //replicate first day of forecast to expand to five days using a LOOP (looping through an array)
-function displayForecast(){
+function displayForecast(response){
+    console.log(response.data.list);
+    let forecast = response.data.daily;
+
     let forecastElement = document.querySelector("#forecast");
 
     let forecastHTML = `<div class="row">`;
-    let days = ["Thu","Fri","Sat", "Sun"];
-    days.forEach(function(day) {
-        forecastHTML = forecastHTML + `
+    forecast.forEach(function (forecastDay) {
+        forecastHTML = 
+            forecastHTML + 
+            `
         <div class="col-2">
-        <div class="weather-forecast-date">${day}</div>
+        <div class="weather-forecast-date">${forecastDay.dt}</div>
         <img 
-            src="http://openweathermap.org/img/wn/02d@2x.png" 
-            alt="cloudy" 
+            src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png" 
+            alt="" 
             width="30"
          />
         <div class="weather-forecast-temp">
-            <span class="weather-forecast-temp-max">70°</span>
-            <span class="weather-forecast-temp-min">50°</span>
+            <span class="weather-forecast-temp-max"> ${forecastDay.temp.max}</span>
+            <span class="weather-forecast-temp-min"> ${forecastDay.temp.min}</span>
         </div>
         </div> 
         `;
@@ -55,14 +59,12 @@ forecastHTML = forecastHTML + `</div>`;
 forecastElement.innerHTML = forecastHTML;
 }
 
-
-
-
-
-
-
-
-
+function getForecast(coordinates) {
+    console.log(coordinates);
+    let apiKey = "f09d3949047ab6c9e3bcaf79cf61f619";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(displayForecast);
+}
 
 
 
@@ -71,13 +73,10 @@ forecastElement.innerHTML = forecastHTML;
 
 
 //pull weather data from Openweather API
-function getForecast(coordinates){
-    let apiKey = "701f06352d61835bc4fc894e7b084629";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(displayForecast);
 
 
-}
+
+
 
 function displayTemperature(response){
     let temperatureElement = document.querySelector("#temperature");
@@ -90,7 +89,6 @@ function displayTemperature(response){
 
 
 //Storing F temp inside variable for use later
-//Calling 8 day forecast weather API
 fahrenheitTemp = response.data.main.temp;
 
     temperatureElement.innerHTML = Math.round(fahrenheitTemp);
@@ -102,8 +100,8 @@ fahrenheitTemp = response.data.main.temp;
     iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`)
     iconElement.setAttribute("alt", response.data.weather[0].description)
 
-getForecast(response.data.coord);
 
+getForecast(response.data.coord);
 
 
 
@@ -111,7 +109,7 @@ getForecast(response.data.coord);
 
 //Make search button work and use the input city to pull weather data from API (1 of 3)
 function search(city){
-    let apiKey = "5aac6d0188c6f17d6d2bbe6591b6fef0";
+    let apiKey = "6a48a550fc04f170639e60d52b8a6bc5";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
     axios.get(apiUrl).then(displayTemperature);
 }
@@ -158,4 +156,3 @@ fahrenheitLink.addEventListener("click", showFahrenheitTemp);
 
 //Below is continuation of search button (3 of 3)
 search("Malibu");
-displayForecast();
