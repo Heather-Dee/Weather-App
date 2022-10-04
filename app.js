@@ -71,6 +71,14 @@ forecastElement.innerHTML = forecastHTML;
 
 
 //pull weather data from Openweather API
+function getForecast(coordinates){
+    let apiKey = "701f06352d61835bc4fc894e7b084629";
+    let apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=imperial`;
+    axios.get(apiUrl).then(displayForecast);
+
+
+}
+
 function displayTemperature(response){
     let temperatureElement = document.querySelector("#temperature");
     let cityElement = document.querySelector("#city");
@@ -82,6 +90,7 @@ function displayTemperature(response){
 
 
 //Storing F temp inside variable for use later
+//Calling 8 day forecast weather API
 fahrenheitTemp = response.data.main.temp;
 
     temperatureElement.innerHTML = Math.round(fahrenheitTemp);
@@ -92,6 +101,12 @@ fahrenheitTemp = response.data.main.temp;
     dateElement.innerHTML = formatDate(response.data.dt * 1000);
     iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`)
     iconElement.setAttribute("alt", response.data.weather[0].description)
+
+getForecast(response.data.coord);
+
+
+
+
 }
 
 //Make search button work and use the input city to pull weather data from API (1 of 3)
