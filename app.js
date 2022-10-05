@@ -28,10 +28,25 @@ function formatDate(timestamp){
     return `${day} ${hours}:${minutes}`;
 }
 //replicate first day of forecast to expand to five days using a LOOP (looping through an array)
-function displayForecast(response){
-    console.log(response.data.list);
-    let forecast = response.data.daily;
 
+function formatDay(timestamp){
+    let date = new Date(timestamp * 1000);
+    let day = date.getDay();
+    let days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+    return days[day];
+}
+
+function displayForecast(response){
+    let forecast = response.data.daily;
+   
     let forecastElement = document.querySelector("#forecast");
 
     let forecastHTML = `<div class="row">`;
@@ -42,7 +57,7 @@ function displayForecast(response){
         <div class="col-2">
         <div class="weather-forecast-date">${forecastDay.dt}</div>
         <img 
-            src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png" 
+            src="https://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png" 
             alt="" 
             width="30"
          />
@@ -61,9 +76,10 @@ forecastElement.innerHTML = forecastHTML;
 
 function getForecast(coordinates) {
     console.log(coordinates);
-    let apiKey = "f09d3949047ab6c9e3bcaf79cf61f619";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+    let apiKey = "1d038ee28ef2727a9f0310860ac10ae9";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayForecast);
+
 }
 
 
